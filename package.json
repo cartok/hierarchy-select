@@ -6,12 +6,19 @@
     "name": "Evgeniy NeoFusion",
     "email": "evgeniy@neofusion.ru"
   },
+  "contributers": [
+    {
+      "name": "Dennis Weiershäuser",
+      "email": "dennis.weiershaeuser@informatik.hs-fulda.de",
+      "url": "https://github.com/cartok?tab=repositories"
+    }
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/NeoFusion/hierarchy-select.git"
+    "url": "https://github.com/cartok/hierarchy-select.git"
   },
-  "homepage": "https://github.com/NeoFusion/hierarchy-select",
+  "homepage": "https://github.com/cartok/hierarchy-select.git",
   "bugs": {
     "url": "https://github.com/NeoFusion/hierarchy-select/issues"
   },
@@ -23,31 +30,54 @@
     "bootstrap",
     "form",
     "jquery",
-    "jquery-plugin"
+    "jquery-plugin",
+    "autocomplete"
   ],
   "scripts": {
-    "server": "http-server ./docs",
-    "server-silent": "http-server ./docs -s -p8081",
-    "start": "npm run server",
-    "test": "npm run e2e",
-    "pree2e": "webdriver-manager update --standalone false --gecko false",
-    "e2e": "concurrently --kill-others --success first \"npm run server-silent\" \"protractor\"",
-    "build": "grunt",
-    "prepublishOnly": "grunt; npm run --silent test"
+    "sound:plock": "play -q -v 0.2 $(find /usr/share/sounds/ -type f -name *device-added* | head -n 1)",
+    "sound:microwave": "play -q -v 0.1 $(find /usr/share/sounds/ -type f -name *complete* | head -n 1)",
+    "sound:trash": "play -q -v 0.15 $(find /usr/share/sounds/ -type f -name *trash*  | head -n 1)",
+    "clean:js": "rm $(find ./build/ -type f -regex '.*\\.[jt]sx?') && npm run --silent sound:trash",
+    "clean:dir": "rm -rf ./build && npm run --silent sound:trash",
+    "build": "clear; npm run --silent clean:dir && mkdir build && cp src/hierarchy-select* build/ && npm run --silent sound:microwave",
+    "test": "clear; npm run --silent build && ./bin/mocha --compilers js:babel-core/register --require jsdom-global/register && npm run --silent sound:plock",
+    "test:monitor": "nodemon -x \"rm -rf ./build; mkdir build && cp src/hierarchy-select* build/ && ./bin/mocha --compilers js:babel-core/register --require jsdom-global/register && npm run --silent sound:plock\"",
+    "prepublishOnly": "npm run --silent test"
   },
   "peerDependencies": {
-    "jquery": "1.9.1 - 3"
+    "jquery": "1.9.1 - 3.x.x"
   },
   "devDependencies": {
-    "concurrently": "^3.3.0",
-    "grunt": "^1.0.1",
-    "grunt-contrib-clean": "^1.0.0",
-    "grunt-contrib-copy": "^1.0.0",
-    "grunt-contrib-uglify": "^2.0.0",
-    "grunt-sass": "^2.0.0",
-    "http-server": "^0.9.0",
-    "jasmine-core": "^2.5.2",
-    "jasmine-spec-reporter": "^3.2.0",
-    "protractor": "^5.1.1"
+    "@types/chai": "*",
+    "@types/jquery": "*",
+    "@types/mocha": "*",
+    "babel-cli": "*",
+    "babel-eslint": "*",
+    "babel-preset-flow": "*",
+    "babel-preset-env": "*",
+    "chai": "*",
+    "eslint": "*",
+    "eslint-plugin-flowtype": "*",
+    "flow-bin": "*",
+    "jquery": "^3.x.x",
+    "jsdom": "*",
+    "jsdom-global": "*",
+    "less": "*",
+    "mocha": "*",
+    "node-sass": "*",
+    "nodemon": "*",
+    "tslint": "*",
+    "tslint-eslint-rules": "*",
+    "typescript": "*"
+  },
+  "dependencies": {},
+  "nodemonConfig": {
+    "ignore": [
+      "build",
+      "built",
+      "dist",
+      "bin",
+      "node_modules"
+    ]
   }
 }

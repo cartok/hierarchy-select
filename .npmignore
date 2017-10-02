@@ -1,0 +1,6 @@
+/.awcache/
+/src/
+/test/
+
+/node_modules/
+/bin/

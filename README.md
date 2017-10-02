@@ -1,3 +1,9 @@
 # Hierarchy Select jQuery Plugin for Twitter Bootstrap
 
-[![Build Status](https://travis-ci.org/NeoFusion/hierarchy-select.svg?branch=master)](https://travis-ci.org/NeoFusion/hierarchy-select)
+### This fork adds following options:
+* togglePosition: boolean
+* returnAfterSelect: boolean
+* selectFirstOnEnter: boolean
+* keepFocused: boolean
+
+### It's a es6 webpack build :)

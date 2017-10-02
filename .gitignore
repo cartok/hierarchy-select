@@ -1,5 +1,7 @@
-/.idea
-/node_modules
-npm-debug.log
-/dist
-/docs/dist
+/.awcache/
+/build/
+/built/
+/static/
+/dist/
+
+/node_modules/
