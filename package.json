@@ -22,9 +22,9 @@
   "bugs": {
     "url": "https://github.com/NeoFusion/hierarchy-select/issues"
   },
-  "main": "dist/hierarchy-select.min.js",
+  "main": "build/hierarchy-select.js",
   "files": [
-    "dist"
+    "build"
   ],
   "keywords": [
     "bootstrap",
