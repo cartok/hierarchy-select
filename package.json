@@ -1,17 +1,24 @@
 {
   "name": "@cartok/hierarchy-select",
-  "version": "0.0.6",
+  "version": "1.0.0",
   "description": "Hierarchy Select jQuery Plugin for Twitter Bootstrap",
   "author": {
     "name": "Evgeniy NeoFusion",
     "email": "evgeniy@neofusion.ru"
   },
+  "contributers": [
+    {
+      "name": "Dennis Weiershäuser",
+      "email": "dennis.weiershaeuser@informatik.hs-fulda.de",
+      "url": "https://github.com/cartok?tab=repositories"
+    }
+  ],
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/NeoFusion/hierarchy-select.git"
+    "url": "https://github.com/cartok/hierarchy-select.git"
   },
-  "homepage": "https://github.com/NeoFusion/hierarchy-select",
+  "homepage": "https://github.com/cartok/hierarchy-select.git",
   "bugs": {
     "url": "https://github.com/NeoFusion/hierarchy-select/issues"
   },
@@ -21,9 +28,10 @@
   ],
   "keywords": [
     "bootstrap",
-    "form",
+    "bootstrap plugin",
     "jquery",
-    "jquery-plugin",
+    "jquery plugin",
+    "plugin",
     "autocomplete",
     "hierarchy"
   ],
@@ -34,12 +42,15 @@
     "clean:js": "rm $(find ./build/ -type f -regex '.*\\.[jt]sx?'); npm run --silent sound:trash",
     "clean:dir": "rm -rf ./build; npm run --silent sound:trash",
     "build:css": "sass --sourcemap=inline ./src/hierarchy-select.scss ./build/hierarchy-select.css",
-    "build": "clear; npm run --silent clean:dir; npm run --silent build:css && cp ./src/* ./build/ && npm run --silent sound:microwave",
+    "build": "clear; npm run --silent clean:dir && mkdir build && npm run --silent build:css && cp ./src/* ./build/ && npm run --silent sound:microwave",
     "test": "clear; npm run --silent build && ./bin/mocha --compilers js:babel-core/register --require jsdom-global/register && npm run --silent sound:plock",
-    "test:monitor": "nodemon -x \"rm -rf ./build; cp ./src/* ./build/ && ./bin/mocha --compilers js:babel-core/register --require jsdom-global/register && npm run --silent sound:plock\"",
+    "test:monitor": "nodemon -x \"rm -rf ./build; mkdir build; cp ./src/* ./build/ && ./bin/mocha --compilers js:babel-core/register --require jsdom-global/register && npm run --silent sound:plock\"",
     "prepublishOnly": "npm run --silent test"
   },
   "devDependencies": {
+    "@types/chai": "*",
+    "@types/jquery": "*",
+    "@types/mocha": "*",
     "babel-cli": "*",
     "babel-eslint": "*",
     "babel-preset-flow": "*",
@@ -53,7 +64,12 @@
     "jsdom": "*",
     "jsdom-global": "*",
     "mocha": "*",
-    "nodemon": "*"
+    "nodemon": "*",
+    "less": "*",
+    "node-sass": "*",
+    "tslint": "*",
+    "tslint-eslint-rules": "*",
+    "typescript": "*"
   },
   "dependencies": {},
   "nodemonConfig": {

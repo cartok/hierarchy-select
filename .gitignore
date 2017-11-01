@@ -1,8 +1,9 @@
-build/
-built/
-static/
-dist/
+/.awcache/
+/.sass-cache/
 
-node_modules/
+/build/
+/built/
+/static/
+/dist/
 
-.sass-cache/
+/node_modules/
