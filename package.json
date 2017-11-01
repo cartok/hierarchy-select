@@ -33,7 +33,8 @@
     "sound:trash": "play -q -v 0.15 $(find /usr/share/sounds/ -type f -name *trash*  | head -n 1)",
     "clean:js": "rm $(find ./build/ -type f -regex '.*\\.[jt]sx?'); npm run --silent sound:trash",
     "clean:dir": "rm -rf ./build; npm run --silent sound:trash",
-    "build": "clear; npm run --silent clean:dir; cp ./src/* ./build/ && npm run --silent sound:microwave",
+    "build:css": "sass --sourcemap=inline ./src/hierarchy-select.scss ./build/hierarchy-select.css",
+    "build": "clear; npm run --silent clean:dir; npm run --silent build:css && cp ./src/* ./build/ && npm run --silent sound:microwave",
     "test": "clear; npm run --silent build && ./bin/mocha --compilers js:babel-core/register --require jsdom-global/register && npm run --silent sound:plock",
     "test:monitor": "nodemon -x \"rm -rf ./build; cp ./src/* ./build/ && ./bin/mocha --compilers js:babel-core/register --require jsdom-global/register && npm run --silent sound:plock\"",
     "prepublishOnly": "npm run --silent test"
