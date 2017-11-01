@@ -1,5 +1,8 @@
-/.idea
-/node_modules
-npm-debug.log
-/dist
-/docs/dist
+build/
+built/
+static/
+dist/
+
+node_modules/
+
+.sass-cache/
