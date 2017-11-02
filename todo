@@ -1,2 +1,5 @@
-* transform js code (class syntax).
-* babel strip flow types for better coding style.
+* A. babel strip flow types for better coding style.
+* B. better auto completition, it's commented in the key input handler.
+* B. default selection not working if not giving the init function a 
+handler that fills the list with items and sets 'data-default-selected'
+* C. transform js code (class syntax).

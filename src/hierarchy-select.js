@@ -2,18 +2,22 @@
 
 
 // a function append hierarchySelect to $.
-export default jquery => {
-
-    const HierarchySelect = function(element, options) {
+export default (jquery) => {
+    const HierarchySelect = function(element, options, listInit) {
         this.$element = $(element)
+        // this.$element.on("key", ...)
         this.options = $.extend({}, $.fn.hierarchySelect.defaults, options)
         this.$button = this.$element.children('button')
         this.$selectedLabel = this.$button.children('.selected-label')
         this.$menu = this.$element.children('.dropdown-menu')
         this.$menuInner = this.$menu.children('.inner')
         this.$searchbox = this.$menu.find('input')
+        // this.$searchbox.on("change", () => event.preventDefault())
         this.$hiddenField = this.$element.children('input')
         this.previouslySelected = null
+        if(listInit instanceof Function){
+            listInit()
+        }
         this.init()
     }
 
@@ -24,7 +28,7 @@ export default jquery => {
             this.setHeight()
             this.initSelect()
             this.clickListener()
-            this.buttonListener()
+            // this.buttonListener()
             this.searchListener()
         },
         initSelect() {
@@ -84,18 +88,7 @@ export default jquery => {
         },
         disable() {
             this.$button.attr('disabled', 'disabled')
-        },
-        setSelected(li) {
-            if (li.length) {
-                var text = li.children('a').text()
-                var value = li.data('value')
-                this.$selectedLabel.html(text)
-                this.$hiddenField.val(value)
-                this.$menuInner.find('.active').removeClass('active')
-                li.addClass('active')
-                this.$element.trigger('change')
-            }
-        },
+        },        
         moveUp () {
             var items = this.$menuInner.find('li:not(.hidden,.disabled)')
             var liActive = this.$menuInner.find('.active')
@@ -139,6 +132,30 @@ export default jquery => {
             selected && this.setSelected(selected)
             this.$button.dropdown('toggle')
         },
+        setSelected(li) {
+            if (li.length) {
+                var text = li.children('a').text()
+                var value = li.data('value')
+                this.$selectedLabel.html(text)
+                this.$hiddenField.val(value)
+                this.$menuInner.find('.active').removeClass('active')
+                li.addClass('active')
+                // i changed the event trigger logic. needed fix. has been triggered multiple times on keyboard input. 
+                // this.$element.trigger('change', text)
+            }
+        },
+        triggerSelect(li){
+            if(li === undefined){
+                li = this.$menuInner.find('.active')
+                if (li.hasClass('hidden') || li.hasClass('disabled')) {
+                    return
+                }
+            }
+            if (li.length) {
+                var text = li.children('a').text()
+                this.$element.trigger('change', text)
+            }
+        },
         clickListener(e) {
             var that = this
             this.$element.on('show.bs.dropdown', function() {
@@ -181,54 +198,7 @@ export default jquery => {
                     e.stopPropagation()
                 } else {
                     that.setSelected(li)
-                }
-            })
-        },
-        buttonListener () {
-            var that = this
-            if (this.options.search) {
-                return
-            }
-            this.$button.on('keydown', function (e) {
-                switch (e.keyCode) {
-                    case 9: // Tab
-                        if (that.$element.hasClass('open')) {
-                            e.preventDefault()
-                        }
-                        break
-                    case 13: // Enter
-                        if (that.$element.hasClass('open')) {
-                            e.preventDefault()
-                            that.selectItem()
-                        }
-                        break
-                    case 27: //Esc
-                        if (that.$element.hasClass('open')) {
-                            e.preventDefault()
-                            e.stopPropagation()
-                            if(that.options.returnAfterSelect === false){
-                                that.$button.focus()
-                            }
-                            that.previouslySelected && that.setSelected(that.previouslySelected)
-                            that.$button.dropdown('toggle')
-                        }
-                        break
-                    case 38: // Up
-                        if (that.$element.hasClass('open')) {
-                            e.preventDefault()
-                            e.stopPropagation()
-                            that.moveUp()
-                        }
-                        break
-                    case 40: // Down
-                        if (that.$element.hasClass('open')) {
-                            e.preventDefault()
-                            e.stopPropagation()
-                            that.moveDown()
-                        }
-                        break
-                    default:
-                        break
+                    that.triggerSelect(li)
                 }
             })
         },
@@ -262,12 +232,14 @@ export default jquery => {
                     case 13: // Enter
                         if(that.isItemSelected()){
                             that.selectItem()
+                            // dont trigger select event here.
                         }
                         else{
                             var firstVisibleItem = that.getFirstVisibleItem()
                             that.setSelected(firstVisibleItem)
                             setTimeout(function(){
                                 that.selectItem(firstVisibleItem)
+                                that.triggerSelect(firstVisibleItem)
                             }, 120)
                         }
                         break
@@ -308,6 +280,10 @@ export default jquery => {
                     items.each(function() {
                         var item = $(this)
                         var text = item.children('a').text().toLowerCase()
+
+                        // 1. show all labels that contain the search-'word' [x]
+                        // 2. auto preselect the first label that starts with the search-'word' []
+                        // -> switch 'active' class!
                         if (text.indexOf(searchString) != -1) {
                             item.toggleClass('disabled', false)
                             item.toggleClass('hidden', false)
@@ -318,13 +294,69 @@ export default jquery => {
                             item.toggleClass('disabled', false)
                             item.toggleClass('hidden', true)
                         }
+
+
                     })
                 }
             })
         }
+        /*
+        buttonListener () {
+            var that = this
+            if (this.options.search) {
+                return
+            }
+            this.$button.on('keydown', function (e) {
+                switch (e.keyCode) {
+                    case 9: // Tab
+                        if (that.$element.hasClass('open')) {
+                            e.preventDefault()
+                        }
+                        break
+                    case 13: // Enter
+                        if (that.$element.hasClass('open')) {
+                            e.preventDefault()
+                            that.selectItem()
+                            that.triggerSelect()
+                        }
+                        break
+                    case 27: //Esc
+                        if (that.$element.hasClass('open')) {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            if(that.options.returnAfterSelect === false){
+                                that.$button.focus()
+                            }
+                            if(that.previouslySelected){
+                                that.setSelected(that.previouslySelected)
+                                that.triggerSelect(that.previouslySelected)
+                            }
+                            that.$button.dropdown('toggle')
+                        }
+                        break
+                    case 38: // Up
+                        if (that.$element.hasClass('open')) {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            that.moveUp()
+                        }
+                        break
+                    case 40: // Down
+                        if (that.$element.hasClass('open')) {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            that.moveDown()
+                        }
+                        break
+                    default:
+                        break
+                }
+            })
+        },
+        */
     }
 
-    const Plugin = function(option) {
+    const Plugin = function(option, listInit) {
         let args = Array.prototype.slice.call(arguments, 1)
         let method = undefined
         let chain = this.each(function() {
@@ -332,7 +364,7 @@ export default jquery => {
             let data    = $this.data('HierarchySelect')
             let options = typeof option == 'object'  && option
             if (!data) {
-                $this.data('HierarchySelect', (data = new HierarchySelect(this, options)))
+                $this.data('HierarchySelect', (data = new HierarchySelect(this, options, listInit)))
             }
             if (typeof option == 'string') {
                 method = data[option].apply(data, args)
@@ -352,10 +384,10 @@ export default jquery => {
         height: '208px',
         hierarchy: true,
         search: true,
-        // new options are disabled by default.
+        // new options.
         togglePosition: true,
-        returnAfterSelect: false,
-        selectFirstOnEnter: false,
+        returnAfterSelect: true,
+        selectFirstOnEnter: true,
         keepFocused: true,
     }
     jquery.fn.hierarchySelect.Constructor = HierarchySelect
