@@ -39,12 +39,12 @@
     "sound:plock": "play -q -v 0.2 $(find /usr/share/sounds/ -type f -name *device-added* | head -n 1)",
     "sound:microwave": "play -q -v 0.1 $(find /usr/share/sounds/ -type f -name *complete* | head -n 1)",
     "sound:trash": "play -q -v 0.15 $(find /usr/share/sounds/ -type f -name *trash*  | head -n 1)",
-    "clean:js": "rm $(find ./build/ -type f -regex '.*\\.[jt]sx?'); npm run --silent sound:trash",
-    "clean:dir": "rm -rf ./build; npm run --silent sound:trash",
+    "clean:js": "rm $(find ./build/ -type f -regex '.*\\.[jt]sx?') && npm run --silent sound:trash",
+    "clean:dir": "rm -rf ./build && npm run --silent sound:trash",
     "build:css": "sass --sourcemap=inline ./src/hierarchy-select.scss ./build/hierarchy-select.css",
-    "build": "clear; npm run --silent clean:dir && mkdir build && npm run --silent build:css && cp ./src/* ./build/ && npm run --silent sound:microwave",
+    "build": "clear; npm run --silent clean:dir && mkdir build && npm run --silent build:css && cp -r ./src/* ./build/ && npm run --silent sound:microwave",
     "test": "clear; npm run --silent build && ./bin/mocha --compilers js:babel-core/register --require jsdom-global/register && npm run --silent sound:plock",
-    "test:monitor": "nodemon -x \"rm -rf ./build; mkdir build; cp ./src/* ./build/ && ./bin/mocha --compilers js:babel-core/register --require jsdom-global/register && npm run --silent sound:plock\"",
+    "test:monitor": "nodemon -x \"rm -rf ./build && mkdir build && cp -r ./src/* ./build/ && ./bin/mocha --compilers js:babel-core/register --require jsdom-global/register && npm run --silent sound:plock\"",
     "prepublishOnly": "npm run --silent test"
   },
   "devDependencies": {
@@ -53,32 +53,33 @@
     "@types/mocha": "*",
     "babel-cli": "*",
     "babel-eslint": "*",
-    "babel-preset-flow": "*",
     "babel-preset-env": "*",
+    "babel-preset-flow": "*",
     "chai": "*",
-    "del-cli": "*",
+    "dom-node-template-es6": "^1.1.1",
     "eslint": "*",
     "eslint-plugin-flowtype": "*",
     "flow-bin": "*",
+    "http-server": "^0.10.0",
     "jquery": "3.x.x",
     "jsdom": "*",
     "jsdom-global": "*",
     "mocha": "*",
-    "nodemon": "*",
-    "less": "*",
     "node-sass": "*",
+    "nodemon": "*",
     "tslint": "*",
     "tslint-eslint-rules": "*",
     "typescript": "*"
   },
-  "dependencies": {},
+  "dependencies": {
+  },
   "nodemonConfig": {
     "ignore": [
-        "build",
-        "built",
-        "dist",
-        "bin",
-        "node_modules"
+      "build",
+      "built",
+      "dist",
+      "bin",
+      "node_modules"
     ]
   }
 }

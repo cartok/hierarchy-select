@@ -1,346 +1,350 @@
-import * as $ from "jquery"
+// import * as $ from "../node_modules/jquery/dist/jquery.js"
 
-const HierarchySelect = function(element, options) {
-    this.$element = $(element)
-    this.options = $.extend({}, $.fn.hierarchySelect.defaults, options)
-    this.$button = this.$element.children('button')
-    this.$selectedLabel = this.$button.children('.selected-label')
-    this.$menu = this.$element.children('.dropdown-menu')
-    this.$menuInner = this.$menu.children('.inner')
-    this.$searchbox = this.$menu.find('input')
-    this.$hiddenField = this.$element.children('input')
-    this.previouslySelected = null
-    this.init()
-}
 
-HierarchySelect.prototype = {
-    constructor: HierarchySelect,
-    init() {
-        this.setWidth()
-        this.setHeight()
-        this.initSelect()
-        this.clickListener()
-        this.buttonListener()
-        this.searchListener()
-    },
-    initSelect() {
-        var item = this.$menuInner.find('li[data-default-selected]:first')
-        if (item.length) {
-            this.setValue(item.data('value'))
-        } else {
-            var firstItem = this.$menuInner.find('li:first')
-            this.setValue(firstItem.data('value'))
-        }
-    },
-    isItemSelected(){
-        var items = this.$menuInner.find('li')
-        var isAnyItemSelected = false
-        items.each(function(idx, item){
-            item = $(item)
-            if(item.hasClass('active') && !item.hasClass('hidden')){
-                isAnyItemSelected = true
+// a function append hierarchySelect to $.
+export default jquery => {
+
+    const HierarchySelect = function(element, options) {
+        this.$element = $(element)
+        this.options = $.extend({}, $.fn.hierarchySelect.defaults, options)
+        this.$button = this.$element.children('button')
+        this.$selectedLabel = this.$button.children('.selected-label')
+        this.$menu = this.$element.children('.dropdown-menu')
+        this.$menuInner = this.$menu.children('.inner')
+        this.$searchbox = this.$menu.find('input')
+        this.$hiddenField = this.$element.children('input')
+        this.previouslySelected = null
+        this.init()
+    }
+
+    HierarchySelect.prototype = {
+        constructor: HierarchySelect,
+        init() {
+            this.setWidth()
+            this.setHeight()
+            this.initSelect()
+            this.clickListener()
+            this.buttonListener()
+            this.searchListener()
+        },
+        initSelect() {
+            var item = this.$menuInner.find('li[data-default-selected]:first')
+            if (item.length) {
+                this.setValue(item.data('value'))
+            } else {
+                var firstItem = this.$menuInner.find('li:first')
+                this.setValue(firstItem.data('value'))
             }
-        })
-        return isAnyItemSelected
-    },
-    setWidth() {
-        if (this.options.width === 'auto') {
-            var width = this.$menu.width()
-            this.$element.css('min-width', width + 2 + 'px')
-        } else if (this.options.width) {
-            this.$element.css('width', this.options.width)
-        } else {
-            this.$element.css('min-width', '42px')
-        }
-    },
-    setHeight() {
-        if (this.options.height) {
-            this.$menu.css('overflow', 'hidden')
-            this.$menuInner.css({
-                'max-height': this.options.height,
-                'overflow-y': 'auto'
+        },
+        isItemSelected(){
+            var items = this.$menuInner.find('li')
+            var isAnyItemSelected = false
+            items.each(function(idx, item){
+                item = $(item)
+                if(item.hasClass('active') && !item.hasClass('hidden')){
+                    isAnyItemSelected = true
+                }
             })
-        }
-    },
-    getText() {
-        return this.$selectedLabel.text()
-    },
-    getValue() {
-        return this.$hiddenField.val()
-    },
-    getFirstVisibleItem(){
-        return this.$menuInner.find('li').not('.hidden').first()
-    },
-    setValue(value) {
-        var li = this.$menuInner.children('li[data-value="' + value + '"]:first')
-        this.setSelected(li)
-    },
-    enable() {
-        this.$button.removeAttr('disabled')
-    },
-    disable() {
-        this.$button.attr('disabled', 'disabled')
-    },
-    setSelected(li) {
-        if (li.length) {
-            var text = li.children('a').text()
-            var value = li.data('value')
-            this.$selectedLabel.html(text)
-            this.$hiddenField.val(value)
-            this.$menuInner.find('.active').removeClass('active')
-            li.addClass('active')
-            this.$element.trigger('change')
-        }
-    },
-    moveUp () {
-        var items = this.$menuInner.find('li:not(.hidden,.disabled)')
-        var liActive = this.$menuInner.find('.active')
-        var index = items.index(liActive)
-        if (typeof items[index - 1] !== 'undefined') {
-            this.$menuInner.find('.active').removeClass('active')
-            items[index - 1].classList.add('active')
-            processElementOffset(this.$menuInner[0], items[index - 1])
-        }
-    },
-    moveDown () {
-        var items = this.$menuInner.find('li:not(.hidden,.disabled)')
-        var liActive = this.$menuInner.find('.active')
-        var index = items.index(liActive)
-        if (typeof items[index + 1] !== 'undefined') {
-            this.$menuInner.find('.active').removeClass('active')
-            if (items[index + 1]) {
-                items[index + 1].classList.add('active')
-                processElementOffset(this.$menuInner[0], items[index + 1])
+            return isAnyItemSelected
+        },
+        setWidth() {
+            if (this.options.width === 'auto') {
+                var width = this.$menu.width()
+                this.$element.css('min-width', width + 2 + 'px')
+            } else if (this.options.width) {
+                this.$element.css('width', this.options.width)
+            } else {
+                this.$element.css('min-width', '42px')
             }
-        }
-    },
-    selectItem (li) {
-        var that = this
-        var selected = undefined
-        if(li){
-            selected = li
-        } else {
-            selected = this.$menuInner.find('.active')
-            if (selected.hasClass('hidden') || selected.hasClass('disabled')) {
-                return
+        },
+        setHeight() {
+            if (this.options.height) {
+                this.$menu.css('overflow', 'hidden')
+                this.$menuInner.css({
+                    'max-height': this.options.height,
+                    'overflow-y': 'auto'
+                })
             }
-        }
-        if(that.options.returnAfterSelect === true){
-            // dont refocus the button after a selection
-        } else {
-            setTimeout(function() {
-                that.$button.focus()
-            }, 0)
-        }
-        selected && this.setSelected(selected)
-        this.$button.dropdown('toggle')
-    },
-    clickListener(e) {
-        var that = this
-        this.$element.on('show.bs.dropdown', function() {
-            var $this = $(this)
-            // dont toggle the dropdown drop position
-            if(that.options.togglePosition === true){
-                var scrollTop = $(window).scrollTop()
-                var windowHeight = $(window).height()
-                var upperHeight = $this.offset().top - scrollTop
-                var elementHeight = $this.outerHeight()
-                var lowerHeight = windowHeight - upperHeight - elementHeight
-                var dropdownHeight = that.$menu.outerHeight(true)
-                if (lowerHeight < dropdownHeight && upperHeight > dropdownHeight) {
-                    $this.toggleClass('dropup', true)
+        },
+        getText() {
+            return this.$selectedLabel.text()
+        },
+        getValue() {
+            return this.$hiddenField.val()
+        },
+        getFirstVisibleItem(){
+            return this.$menuInner.find('li').not('.hidden').first()
+        },
+        setValue(value) {
+            var li = this.$menuInner.children('li[data-value="' + value + '"]:first')
+            this.setSelected(li)
+        },
+        enable() {
+            this.$button.removeAttr('disabled')
+        },
+        disable() {
+            this.$button.attr('disabled', 'disabled')
+        },
+        setSelected(li) {
+            if (li.length) {
+                var text = li.children('a').text()
+                var value = li.data('value')
+                this.$selectedLabel.html(text)
+                this.$hiddenField.val(value)
+                this.$menuInner.find('.active').removeClass('active')
+                li.addClass('active')
+                this.$element.trigger('change')
+            }
+        },
+        moveUp () {
+            var items = this.$menuInner.find('li:not(.hidden,.disabled)')
+            var liActive = this.$menuInner.find('.active')
+            var index = items.index(liActive)
+            if (typeof items[index - 1] !== 'undefined') {
+                this.$menuInner.find('.active').removeClass('active')
+                items[index - 1].classList.add('active')
+                processElementOffset(this.$menuInner[0], items[index - 1])
+            }
+        },
+        moveDown () {
+            var items = this.$menuInner.find('li:not(.hidden,.disabled)')
+            var liActive = this.$menuInner.find('.active')
+            var index = items.index(liActive)
+            if (typeof items[index + 1] !== 'undefined') {
+                this.$menuInner.find('.active').removeClass('active')
+                if (items[index + 1]) {
+                    items[index + 1].classList.add('active')
+                    processElementOffset(this.$menuInner[0], items[index + 1])
                 }
             }
-            var selected = that.$menuInner.find('.active')
-            if(selected.length){
+        },
+        selectItem (li) {
+            var that = this
+            var selected = undefined
+            if(li){
+                selected = li
+            } else {
+                selected = this.$menuInner.find('.active')
+                if (selected.hasClass('hidden') || selected.hasClass('disabled')) {
+                    return
+                }
+            }
+            if(that.options.returnAfterSelect === true){
+                // dont refocus the button after a selection
+            } else {
                 setTimeout(function() {
-                    var el = selected[0]
-                    var p = selected[0].parentNode
-                    if (!(p.scrollTop <= el.offsetTop && (p.scrollTop + p.clientHeight) > el.offsetTop + el.clientHeight)) {
-                        el.parentNode.scrollTop = el.offsetTop
-                    }
+                    that.$button.focus()
                 }, 0)
             }
-        })
-        this.$element.on('shown.bs.dropdown', function() {
-            that.previouslySelected = that.$menuInner.find('.active')
-            that.$searchbox.focus()
-        })
-        this.$element.on('hidden.bs.dropdown', function() {
-            that.$element.toggleClass('dropup', false)
-        })
-        this.$menuInner.on('click', 'li a', function (e) {
-            e.preventDefault()
-            var $this = $(this)
-            var li = $this.parent()
-            if (li.hasClass('disabled')) {
-                e.stopPropagation()
-            } else {
-                that.setSelected(li)
-            }
-        })
-    },
-    buttonListener () {
-        var that = this
-        if (this.options.search) {
-            return
-        }
-        this.$button.on('keydown', function (e) {
-            switch (e.keyCode) {
-                case 9: // Tab
-                    if (that.$element.hasClass('open')) {
-                        e.preventDefault()
+            selected && this.setSelected(selected)
+            this.$button.dropdown('toggle')
+        },
+        clickListener(e) {
+            var that = this
+            this.$element.on('show.bs.dropdown', function() {
+                var $this = $(this)
+                // dont toggle the dropdown drop position
+                if(that.options.togglePosition === true){
+                    var scrollTop = $(window).scrollTop()
+                    var windowHeight = $(window).height()
+                    var upperHeight = $this.offset().top - scrollTop
+                    var elementHeight = $this.outerHeight()
+                    var lowerHeight = windowHeight - upperHeight - elementHeight
+                    var dropdownHeight = that.$menu.outerHeight(true)
+                    if (lowerHeight < dropdownHeight && upperHeight > dropdownHeight) {
+                        $this.toggleClass('dropup', true)
                     }
-                    break
-                case 13: // Enter
-                    if (that.$element.hasClass('open')) {
-                        e.preventDefault()
-                        that.selectItem()
-                    }
-                    break
-                case 27: //Esc
-                    if (that.$element.hasClass('open')) {
-                        e.preventDefault()
-                        e.stopPropagation()
-                        if(that.options.returnAfterSelect === false){
-                            that.$button.focus()
+                }
+                var selected = that.$menuInner.find('.active')
+                if(selected.length){
+                    setTimeout(function() {
+                        var el = selected[0]
+                        var p = selected[0].parentNode
+                        if (!(p.scrollTop <= el.offsetTop && (p.scrollTop + p.clientHeight) > el.offsetTop + el.clientHeight)) {
+                            el.parentNode.scrollTop = el.offsetTop
                         }
-                        that.previouslySelected && that.setSelected(that.previouslySelected)
-                        that.$button.dropdown('toggle')
-                    }
-                    break
-                case 38: // Up
-                    if (that.$element.hasClass('open')) {
-                        e.preventDefault()
-                        e.stopPropagation()
-                        that.moveUp()
-                    }
-                    break
-                case 40: // Down
-                    if (that.$element.hasClass('open')) {
-                        e.preventDefault()
-                        e.stopPropagation()
-                        that.moveDown()
-                    }
-                    break
-                default:
-                    break
+                    }, 0)
+                }
+            })
+            this.$element.on('shown.bs.dropdown', function() {
+                that.previouslySelected = that.$menuInner.find('.active')
+                that.$searchbox.focus()
+            })
+            this.$element.on('hidden.bs.dropdown', function() {
+                that.$element.toggleClass('dropup', false)
+            })
+            this.$menuInner.on('click', 'li a', function (e) {
+                e.preventDefault()
+                var $this = $(this)
+                var li = $this.parent()
+                if (li.hasClass('disabled')) {
+                    e.stopPropagation()
+                } else {
+                    that.setSelected(li)
+                }
+            })
+        },
+        buttonListener () {
+            var that = this
+            if (this.options.search) {
+                return
             }
-        })
-    },
-    searchListener() {
-        var that = this
-        if (!this.options.search) {
-            this.$searchbox.parent().toggleClass('hidden', true)
-            return
-        }
-        function disableParents(element) {
-            var item = element
-            var level = item.data('level')
-            while (typeof item == 'object' && item.length > 0 && level > 1) {
-                level--
-                item = item.prevAll('li[data-level="' + level + '"]:first')
-                if (item.hasClass('hidden')) {
-                    item.toggleClass('disabled', true)
-                    item.removeClass('hidden')
+            this.$button.on('keydown', function (e) {
+                switch (e.keyCode) {
+                    case 9: // Tab
+                        if (that.$element.hasClass('open')) {
+                            e.preventDefault()
+                        }
+                        break
+                    case 13: // Enter
+                        if (that.$element.hasClass('open')) {
+                            e.preventDefault()
+                            that.selectItem()
+                        }
+                        break
+                    case 27: //Esc
+                        if (that.$element.hasClass('open')) {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            if(that.options.returnAfterSelect === false){
+                                that.$button.focus()
+                            }
+                            that.previouslySelected && that.setSelected(that.previouslySelected)
+                            that.$button.dropdown('toggle')
+                        }
+                        break
+                    case 38: // Up
+                        if (that.$element.hasClass('open')) {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            that.moveUp()
+                        }
+                        break
+                    case 40: // Down
+                        if (that.$element.hasClass('open')) {
+                            e.preventDefault()
+                            e.stopPropagation()
+                            that.moveDown()
+                        }
+                        break
+                    default:
+                        break
+                }
+            })
+        },
+        searchListener() {
+            var that = this
+            if (!this.options.search) {
+                this.$searchbox.parent().toggleClass('hidden', true)
+                return
+            }
+            function disableParents(element) {
+                var item = element
+                var level = item.data('level')
+                while (typeof item == 'object' && item.length > 0 && level > 1) {
+                    level--
+                    item = item.prevAll('li[data-level="' + level + '"]:first')
+                    if (item.hasClass('hidden')) {
+                        item.toggleClass('disabled', true)
+                        item.removeClass('hidden')
+                    }
                 }
             }
-        }
-        this.$searchbox.on('keydown', function (e) {
-            switch (e.keyCode) {
-                // @feature: add the positiblity to add shortcuts and/or keys to stop propagation for.
-                case 9: // Tab
-                    e.preventDefault()
-                    e.stopPropagation()
-                    that.$menuInner.click()
-                    that.$button.focus()
-                    break
-                case 13: // Enter
-                    if(that.isItemSelected()){
-                        that.selectItem()
-                    }
-                    else{
-                        var firstVisibleItem = that.getFirstVisibleItem()
-                        that.setSelected(firstVisibleItem)
-                        setTimeout(function(){
-                            that.selectItem(firstVisibleItem)
-                        }, 120)
-                    }
-                    break
-                case 27: // Esc
-                    e.preventDefault()
-                    e.stopPropagation()
-                    if(that.options.keepFocused){
+            this.$searchbox.on('keydown', function (e) {
+                switch (e.keyCode) {
+                    // @feature: add the positiblity to add shortcuts and/or keys to stop propagation for.
+                    case 9: // Tab
+                        e.preventDefault()
+                        e.stopPropagation()
+                        that.$menuInner.click()
                         that.$button.focus()
-                    }
-                    // no need for the functionallity below i think.
-                    // that.previouslySelected && that.setSelected(that.previouslySelected)
-                    that.$button.dropdown('toggle')
-                    break
-                case 38: // Up
-                    e.preventDefault()
-                    that.moveUp()
-                    break
-                case 40: // Down
-                    e.preventDefault()
-                    that.moveDown()
-                    break
-                default:
-                    break
-            }
-        })
-        this.$searchbox.on('input propertychange', function (e) {
-            e.preventDefault()
-            var searchString = that.$searchbox.val().toLowerCase()
-            var items = that.$menuInner.find('li')
+                        break
+                    case 13: // Enter
+                        if(that.isItemSelected()){
+                            that.selectItem()
+                        }
+                        else{
+                            var firstVisibleItem = that.getFirstVisibleItem()
+                            that.setSelected(firstVisibleItem)
+                            setTimeout(function(){
+                                that.selectItem(firstVisibleItem)
+                            }, 120)
+                        }
+                        break
+                    case 27: // Esc
+                        e.preventDefault()
+                        e.stopPropagation()
+                        if(that.options.keepFocused){
+                            that.$button.focus()
+                        }
+                        // no need for the functionallity below i think.
+                        // that.previouslySelected && that.setSelected(that.previouslySelected)
+                        that.$button.dropdown('toggle')
+                        break
+                    case 38: // Up
+                        e.preventDefault()
+                        that.moveUp()
+                        break
+                    case 40: // Down
+                        e.preventDefault()
+                        that.moveDown()
+                        break
+                    default:
+                        break
+                }
+            })
+            this.$searchbox.on('input propertychange', function (e) {
+                e.preventDefault()
+                var searchString = that.$searchbox.val().toLowerCase()
+                var items = that.$menuInner.find('li')
 
-            if (searchString.length === 0) {
-                items.each(function() {
-                    var item = $(this)
-                    item.toggleClass('disabled', false)
-                    item.toggleClass('hidden', false)
-                })
-            } else {
-                items.each(function() {
-                    var item = $(this)
-                    var text = item.children('a').text().toLowerCase()
-                    if (text.indexOf(searchString) != -1) {
+                if (searchString.length === 0) {
+                    items.each(function() {
+                        var item = $(this)
                         item.toggleClass('disabled', false)
                         item.toggleClass('hidden', false)
-                        if (that.options.hierarchy) {
-                            disableParents(item)
+                    })
+                } else {
+                    items.each(function() {
+                        var item = $(this)
+                        var text = item.children('a').text().toLowerCase()
+                        if (text.indexOf(searchString) != -1) {
+                            item.toggleClass('disabled', false)
+                            item.toggleClass('hidden', false)
+                            if (that.options.hierarchy) {
+                                disableParents(item)
+                            }
+                        } else {
+                            item.toggleClass('disabled', false)
+                            item.toggleClass('hidden', true)
                         }
-                    } else {
-                        item.toggleClass('disabled', false)
-                        item.toggleClass('hidden', true)
-                    }
-                })
+                    })
+                }
+            })
+        }
+    }
+
+    const Plugin = function(option) {
+        let args = Array.prototype.slice.call(arguments, 1)
+        let method = undefined
+        let chain = this.each(function() {
+            let $this   = $(this)
+            let data    = $this.data('HierarchySelect')
+            let options = typeof option == 'object'  && option
+            if (!data) {
+                $this.data('HierarchySelect', (data = new HierarchySelect(this, options)))
+            }
+            if (typeof option == 'string') {
+                method = data[option].apply(data, args)
             }
         })
+
+        return (method === undefined) ? chain : method
     }
-}
 
-const Plugin = function(option) {
-    let args = Array.prototype.slice.call(arguments, 1)
-    let method = undefined
-    let chain = this.each(function() {
-        let $this   = $(this)
-        let data    = $this.data('HierarchySelect')
-        let options = typeof option == 'object'  && option
-        if (!data) {
-            $this.data('HierarchySelect', (data = new HierarchySelect(this, options)))
-        }
-        if (typeof option == 'string') {
-            method = data[option].apply(data, args)
-        }
-    })
-
-    return (method === undefined) ? chain : method
-}
-
-// a function append hierarchySelect to $
-export default jquery => {
-    const old = jquery.fn.hierarchySelect
+    // if hierarchySelect is not defined this will be an error.
+    // could check it but i guess we don't need the noConflict handling anyways.
+    // const old = jquery.fn.hierarchySelect
     
     jquery.fn.hierarchySelect = Plugin
     jquery.fn.hierarchySelect.defaults = {
@@ -356,10 +360,10 @@ export default jquery => {
     }
     jquery.fn.hierarchySelect.Constructor = HierarchySelect
     
-    jquery.fn.hierarchySelect.noConflict = function () {
-        jquery.fn.hierarchySelect = old
-        return this
-    }
+    // jquery.fn.hierarchySelect.noConflict = function () {
+    //     jquery.fn.hierarchySelect = old
+    //     return this
+    // }
 }
 
 function processElementOffset(parent, element) {

@@ -1,3 +1,7 @@
+.hierarchy-select {
+  width: 100%;
+  padding: 4px;
+}
 .hierarchy-select.btn-group {
   .dropdown-menu {
     box-sizing: border-box;
@@ -32,9 +36,11 @@
     }
     > .selected-label {
       display: inline-block;
-      overflow: hidden;
       text-align: left;
       width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
     > .caret {
       margin-top: -2px;

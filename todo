@@ -1,0 +1,2 @@
+* transform js code (class syntax).
+* babel strip flow types for better coding style.
