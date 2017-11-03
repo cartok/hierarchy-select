@@ -43,8 +43,8 @@
     "clean:dir": "rm -rf ./build && mkdir build && npm run --silent sound:trash",
     "build:css": "sass --sourcemap=inline ./src/hierarchy-select.scss ./build/hierarchy-select.css",
     "build": "clear; npm run --silent clean:dir && npm run --silent build:css && cp -r ./src/* ./build/ && npm run --silent sound:microwave",
-    "test": "clear; npm run --silent build && ./bin/mocha --compilers js:babel-core/register --require jsdom-global/register && npm run --silent sound:plock",
-    "test:monitor": "nodemon -x \"rm -rf ./build && cp -r ./src/* ./build/ && ./bin/mocha --compilers js:babel-core/register --require jsdom-global/register && npm run --silent sound:plock\"",
+    "test": "clear; npm run --silent build && ./node_modules/.binmocha --compilers js:babel-core/register --require jsdom-global/register && npm run --silent sound:plock",
+    "test:monitor": "nodemon -x \"rm -rf ./build && cp -r ./src/* ./build/ && ./node_modules/.binmocha --compilers js:babel-core/register --require jsdom-global/register && npm run --silent sound:plock\"",
     "prepublishOnly": "npm run --silent test"
   },
   "devDependencies": {

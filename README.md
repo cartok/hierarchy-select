@@ -19,9 +19,9 @@ You should only use this module inside of a build environment (ES6 module).
 ```javascript
 import "jquery"
 import "bootstrap"
-import hierarchySelect from "hierarchy-select"
-import "~bootstrap/dist/css/bootstrap.css"
-import "~hierarchy-select/build/hierarchy-select.css"
+import hierarchySelect from "@cartok/hierarchy-select"
+import "bootstrap/dist/css/bootstrap.css"
+import "@cartok/hierarchy-select/build/hierarchy-select.css"
 hierarchySelect($)
 ```
 
