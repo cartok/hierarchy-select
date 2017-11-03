@@ -109,18 +109,18 @@ $(html.root).hierarchySelect({
         })
         html.refs.list.appendChild(entriesFragment)
     })(data)
-)
+})
 ```
 ### Usage additions
 #### How-to react on selection change?
 ```javascript
-$(html.root).on("change", (e, text) => {
+$(html.root).on("change", (e, data) => {
     // The change event is triggered manually by the plugin through jQuery.
     // But it will also be triggered natively.
     // Only if the event was triggered by the plugin, you will get the text of the selection.
-    if(text !== undefined){
-        console.log("You can use the selected dropdown value on selection like this.")
-        console.log(text)
+    if(data !== undefined){
+        console.log("You can use the selected dropdown text and id on selection like this.")
+        console.log(data)
     }
 })
 ```

@@ -33,10 +33,10 @@ document.body.appendChild(html.fragment)
  * But you can just take out the whole function code and execute it afterwards.
  */
 $(html.root).hierarchySelect({
-    hierarchy: false,
+    "hierarchy": false,
     togglePosition: false,
     keepFocused: false,
-} () => {
+}, () => {
     // id attributes are optional and will be autofilled in the updateSelect() function.
     const data = [{
         id: 0,
@@ -86,7 +86,7 @@ $(html.root).hierarchySelect({
         })
         html.refs.list.appendChild(entriesFragment)
     })(data)
-)
+})
     
 // how-to react on selection-change:
 $(html.root).on("change", (e, text) => {
