@@ -1,6 +1,10 @@
 {
   "name": "@cartok/hierarchy-select",
+<<<<<<< HEAD
   "version": "1.1.0",
+=======
+  "version": "1.0.2",
+>>>>>>> 662f7b853a5a69dae594092754c5c7eb5de9c0e3
   "description": "Hierarchy Select jQuery Plugin for Twitter Bootstrap",
   "author": {
     "name": "Evgeniy NeoFusion",

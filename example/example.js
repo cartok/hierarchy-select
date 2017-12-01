@@ -33,7 +33,7 @@ document.body.appendChild(html.fragment)
  * But you can just take out the whole function code and execute it afterwards.
  */
 $(html.root).hierarchySelect({
-    hierarchy: false,
+    "hierarchy": false,
     togglePosition: false,
     keepFocused: false,
 }, () => {

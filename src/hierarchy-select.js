@@ -89,7 +89,7 @@ export default (jquery) => {
         disable() {
             this.$button.attr('disabled', 'disabled')
         },        
-        moveUp () {
+        moveUp() {
             var items = this.$menuInner.find('li:not(.hidden,.disabled)')
             var liActive = this.$menuInner.find('.active')
             var index = items.index(liActive)
@@ -99,7 +99,7 @@ export default (jquery) => {
                 processElementOffset(this.$menuInner[0], items[index - 1])
             }
         },
-        moveDown () {
+        moveDown() {
             var items = this.$menuInner.find('li:not(.hidden,.disabled)')
             var liActive = this.$menuInner.find('.active')
             var index = items.index(liActive)
@@ -111,7 +111,7 @@ export default (jquery) => {
                 }
             }
         },
-        selectItem (li) {
+        selectItem(li) {
             var that = this
             var selected = undefined
             if(li){
@@ -152,8 +152,9 @@ export default (jquery) => {
                 }
             }
             if (li.length) {
+                var id = parseInt(li.attr('data-value'))
                 var text = li.children('a').text()
-                this.$element.trigger('change', text)
+                this.$element.trigger('change', { id, text })
             }
         },
         clickListener(e) {
