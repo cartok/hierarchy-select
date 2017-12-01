@@ -142,7 +142,7 @@ $(window).on("keydown", (e) => {
 ## How to develop
 Start the http-server for testing the example page for [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS).
 ```
-node bin/http.server
+node node_modules/.bin/http-server
 ```
 
 And use a browser that supports async ES6 module loading via script tag.
