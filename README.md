@@ -140,10 +140,10 @@ $(window).on("keydown", (e) => {
 ```
 
 ## How to develop
-Start the http-server for testing the example page for [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS).
+Start the http-server for testing the example page for [CORS](https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS). Navigate to the examples folder and open the html file.  
+Use a browser that supports async ES6 module loading via script tag.
+[*compability list*](https://caniuse.com/#feat=es6-module)  
+**Suggestion:** Use Chrome >= 62
 ```
 node node_modules/.bin/http-server
 ```
-
-And use a browser that supports async ES6 module loading via script tag.
-[*compability list*](https://caniuse.com/#feat=es6-module)
