@@ -300,8 +300,7 @@ export default (jquery) => {
                     })
                 }
             })
-        }
-        /*
+        },
         buttonListener () {
             var that = this
             if (this.options.search) {
@@ -354,7 +353,6 @@ export default (jquery) => {
                 }
             })
         },
-        */
     }
 
     const Plugin = function(option, listInit) {
