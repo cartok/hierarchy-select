@@ -300,7 +300,8 @@ export default (jquery) => {
             var that = this
             this.$element.on('keydown', function (e) {
                 // dont propagate to 'window' or anywhere else from now on.
-                const keyCodes = [87, 65, 83, 68, 38, 37, 40, 39, 13, 27]
+                // wasd, top left bottom right, enter
+                const keyCodes = [87, 65, 83, 68, 38, 37, 40, 39, 13]
                 if(keyCodes.some(kc => e.keyCode === kc)){
                     e.stopPropagation()
                 }
