@@ -244,6 +244,7 @@ export default (jquery) => {
                         if(that.options.keepFocused){
                             that.$button.focus()
                         }
+                        that.$button.dropdown('toggle')
                         break
                     case 38: // Up
                         // dont propagate to 'window' or anywhere else.
