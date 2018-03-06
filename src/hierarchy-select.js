@@ -241,6 +241,7 @@ export default (jquery) => {
                         break
                     case 27: // Esc
                         e.preventDefault()
+                        e.stopPropagation()
                         if(that.options.keepFocused){
                             that.$button.focus()
                         }
