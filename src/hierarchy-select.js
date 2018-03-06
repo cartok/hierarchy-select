@@ -301,13 +301,6 @@ export default (jquery) => {
         buttonListener() {
             var that = this
             this.$element.on('keydown', function (e) {
-                // dont propagate to 'window' or anywhere else from now on.
-                // wasd, top left bottom right, enter
-                // const keyCodes = [87, 65, 83, 68, 38, 37, 40, 39, 13]
-                // if(keyCodes.some(kc => e.keyCode === kc)){
-                //     console.log("propagation stopped")
-                //     e.stopPropagation()
-                // }
                 if(e.keyCode === 13){
                     e.preventDefault()
                     that.selectItem()
