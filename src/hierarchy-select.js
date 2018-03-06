@@ -28,7 +28,7 @@ export default (jquery) => {
             this.setHeight()
             this.initSelect()
             this.clickListener()
-            // this.buttonListener()
+            this.buttonListener()
             this.searchListener()
         },
         initSelect() {
@@ -301,55 +301,15 @@ export default (jquery) => {
                 }
             })
         },
-        buttonListener () {
+        buttonListener() {
             var that = this
-            if (this.options.search) {
-                return
-            }
-            this.$button.on('keydown', function (e) {
-                switch (e.keyCode) {
-                    case 9: // Tab
-                        if (that.$element.hasClass('open')) {
-                            e.preventDefault()
-                        }
-                        break
-                    case 13: // Enter
-                        if (that.$element.hasClass('open')) {
-                            e.preventDefault()
-                            that.selectItem()
-                            that.triggerSelect()
-                        }
-                        break
-                    case 27: //Esc
-                        if (that.$element.hasClass('open')) {
-                            e.preventDefault()
-                            e.stopPropagation()
-                            if(that.options.returnAfterSelect === false){
-                                that.$button.focus()
-                            }
-                            if(that.previouslySelected){
-                                that.setSelected(that.previouslySelected)
-                                that.triggerSelect(that.previouslySelected)
-                            }
-                            that.$button.dropdown('toggle')
-                        }
-                        break
-                    case 38: // Up
-                        if (that.$element.hasClass('open')) {
-                            e.preventDefault()
-                            e.stopPropagation()
-                            that.moveUp()
-                        }
-                        break
-                    case 40: // Down
-                        if (that.$element.hasClass('open')) {
-                            e.preventDefault()
-                            e.stopPropagation()
-                            that.moveDown()
-                        }
-                        break
-                    default:
-                        break
+            this.$element.on('keydown', function (e) {
+                if(e.keyCode === 13){
+                    if (that.$element.hasClass('open')) {
+                        e.preventDefault()
+                        that.selectItem()
+                        that.triggerSelect()
+                    }
                 }
             })
         },
