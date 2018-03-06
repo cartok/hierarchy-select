@@ -129,8 +129,10 @@ export default (jquery) => {
                     that.$button.focus()
                 }, 0)
             }
-            selected && this.setSelected(selected)
-            this.$button.dropdown('toggle')
+            if(selected){
+                this.setSelected(selected)
+                this.$button.dropdown('toggle')
+            } 
         },
         setSelected(li) {
             if (li.length) {
@@ -140,8 +142,6 @@ export default (jquery) => {
                 this.$hiddenField.val(value)
                 this.$menuInner.find('.active').removeClass('active')
                 li.addClass('active')
-                // i changed the event trigger logic. needed fix. has been triggered multiple times on keyboard input. 
-                // this.$element.trigger('change', text)
             }
         },
         triggerSelect(li){
@@ -238,10 +238,7 @@ export default (jquery) => {
                         else{
                             var firstVisibleItem = that.getFirstVisibleItem()
                             that.setSelected(firstVisibleItem)
-                            setTimeout(function(){
-                                that.selectItem(firstVisibleItem)
-                                that.triggerSelect(firstVisibleItem)
-                            }, 120)
+                            that.selectItem(firstVisibleItem)
                         }
                         break
                     case 27: // Esc
@@ -305,11 +302,10 @@ export default (jquery) => {
             var that = this
             this.$element.on('keydown', function (e) {
                 if(e.keyCode === 13){
-                    if (that.$element.hasClass('open')) {
-                        e.preventDefault()
-                        that.selectItem()
-                        that.triggerSelect()
-                    }
+                    e.preventDefault()
+                    that.selectItem()
+                    that.triggerSelect()
+                    that.$button.dropdown('toggle')
                 }
             })
         },
