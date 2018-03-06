@@ -131,7 +131,6 @@ export default (jquery) => {
             }
             if(selected){
                 this.setSelected(selected)
-                this.$button.dropdown('toggle')
             } 
         },
         setSelected(li) {
@@ -154,6 +153,7 @@ export default (jquery) => {
             if (li.length) {
                 var id = parseInt(li.attr('data-value'))
                 var text = li.children('a').text()
+                this.$button.dropdown('toggle')
                 this.$element.trigger('change', { id, text })
             }
         },
@@ -233,11 +233,9 @@ export default (jquery) => {
                     case 13: // Enter
                         if(that.isItemSelected()){
                             that.selectItem()
-                            // dont trigger select event here.
                         }
-                        else{
+                        else {
                             var firstVisibleItem = that.getFirstVisibleItem()
-                            that.setSelected(firstVisibleItem)
                             that.selectItem(firstVisibleItem)
                         }
                         break
@@ -247,15 +245,16 @@ export default (jquery) => {
                         if(that.options.keepFocused){
                             that.$button.focus()
                         }
-                        // no need for the functionallity below i think.
-                        // that.previouslySelected && that.setSelected(that.previouslySelected)
-                        that.$button.dropdown('toggle')
                         break
                     case 38: // Up
+                        // dont propagate to 'window' or anywhere else.
+                        e.stopPropagation()
                         e.preventDefault()
                         that.moveUp()
                         break
                     case 40: // Down
+                        // dont propagate to 'window' or anywhere else.
+                        e.stopPropagation()
                         e.preventDefault()
                         that.moveDown()
                         break
@@ -301,11 +300,12 @@ export default (jquery) => {
         buttonListener() {
             var that = this
             this.$element.on('keydown', function (e) {
+                // dont propagate to 'window' or anywhere else from now on.
+                e.stopPropagation()
                 if(e.keyCode === 13){
                     e.preventDefault()
                     that.selectItem()
                     that.triggerSelect()
-                    that.$button.dropdown('toggle')
                 }
             })
         },
