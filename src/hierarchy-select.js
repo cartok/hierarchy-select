@@ -241,7 +241,6 @@ export default (jquery) => {
                         break
                     case 27: // Esc
                         e.preventDefault()
-                        e.stopPropagation()
                         if(that.options.keepFocused){
                             that.$button.focus()
                         }
@@ -301,7 +300,10 @@ export default (jquery) => {
             var that = this
             this.$element.on('keydown', function (e) {
                 // dont propagate to 'window' or anywhere else from now on.
-                e.stopPropagation()
+                const keyCodes = [87, 65, 83, 68, 38, 37, 40, 39, 13, 27]
+                if(keyCodes.some(kc => e.keyCode === kc)){
+                    e.stopPropagation()
+                }
                 if(e.keyCode === 13){
                     e.preventDefault()
                     that.selectItem()
