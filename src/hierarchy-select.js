@@ -54,7 +54,7 @@ export default (jquery) => {
         setWidth() {
             if (this.options.width === 'auto') {
                 var width = this.$menu.width()
-                this.$element.css('min-width', width + 2 + 'px')
+                // this.$element.css('min-width', width + 2 + 'px')
             } else if (this.options.width) {
                 this.$element.css('width', this.options.width)
             } else {
