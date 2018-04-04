@@ -42,7 +42,7 @@
     "clean:js": "rm $(find ./build/ -type f -regex '.*\\.[jt]sx?') && npm run --silent sound:trash",
     "clean:dir": "rm -rf ./build && mkdir build && npm run --silent sound:trash",
     "build:css": "sass --sourcemap=inline ./src/hierarchy-select.scss ./build/hierarchy-select.css",
-    "build": "clear; npm run --silent clean:dir && npm run --silent build:css && cp -r ./src/* ./build/ && npm run --silent sound:microwave",
+    "build": "clear; npm install && npm run --silent clean:dir && npm run --silent build:css && cp -r ./src/* ./build/ && npm run --silent sound:microwave",
     "test": "clear; npm run --silent build && ./node_modules/.bin/mocha --compilers js:babel-core/register --require jsdom-global/register && npm run --silent sound:plock",
     "test:monitor": "nodemon -x \"rm -rf ./build && cp -r ./src/* ./build/ && ./node_modules/.bin/mocha --compilers js:babel-core/register --require jsdom-global/register && npm run --silent sound:plock\"",
     "dev:monitor": "nodemon -x \"npm run --silent build && npm run --silent sound:plock && node ./node_modules/.bin/http-server\"",
