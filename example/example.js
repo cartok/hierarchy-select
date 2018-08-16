@@ -1,4 +1,4 @@
-import NodeTemplate from "../node_modules/dom-node-template-es6/build/NodeTemplate.js"
+// import NodeTemplate from "../node_modules/dom-node-template/build/NodeTemplate.js"
 // @thesis importing jquery in the browser
 // jquery is now imported via script tag.
 // the browser does not support importing jquery as we want. 
