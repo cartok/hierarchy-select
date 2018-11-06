@@ -1,7 +1,4 @@
 {
-    "plugins": [
-        "transform-flow-strip-types", 
-        "transform-es2015-spread",
-        "transform-es2015-destructuring"
-    ]
+    "presets": ["env"],
+    "plugins": ["transform-flow-strip-types"]
 }

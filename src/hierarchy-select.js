@@ -4,7 +4,7 @@
 // a function append hierarchySelect to $.
 export default (jquery) => {
     const HierarchySelect = function(element, options, listInit) {
-        this.$element = $(element)
+        this.$element = jquery(element)
         // this.$element.on("key", ...)
         this.options = $.extend({}, $.fn.hierarchySelect.defaults, options)
         this.$button = this.$element.children('button')
@@ -44,7 +44,7 @@ export default (jquery) => {
             var items = this.$menuInner.find('li')
             var isAnyItemSelected = false
             items.each(function(idx, item){
-                item = $(item)
+                item = jquery(item)
                 if(item.hasClass('active') && !item.hasClass('hidden')){
                     isAnyItemSelected = true
                 }
@@ -160,11 +160,11 @@ export default (jquery) => {
         clickListener(e) {
             var that = this
             this.$element.on('show.bs.dropdown', function() {
-                var $this = $(this)
+                var $this = jquery(this)
                 // dont toggle the dropdown drop position
                 if(that.options.togglePosition === true){
-                    var scrollTop = $(window).scrollTop()
-                    var windowHeight = $(window).height()
+                    var scrollTop = jquery(window).scrollTop()
+                    var windowHeight = jquery(window).height()
                     var upperHeight = $this.offset().top - scrollTop
                     var elementHeight = $this.outerHeight()
                     var lowerHeight = windowHeight - upperHeight - elementHeight
@@ -193,7 +193,7 @@ export default (jquery) => {
             })
             this.$menuInner.on('click', 'li a', function (e) {
                 e.preventDefault()
-                var $this = $(this)
+                var $this = jquery(this)
                 var li = $this.parent()
                 if (li.hasClass('disabled')) {
                     e.stopPropagation()
@@ -270,13 +270,13 @@ export default (jquery) => {
 
                 if (searchString.length === 0) {
                     items.each(function() {
-                        var item = $(this)
+                        var item = jquery(this)
                         item.toggleClass('disabled', false)
                         item.toggleClass('hidden', false)
                     })
                 } else {
                     items.each(function() {
-                        var item = $(this)
+                        var item = jquery(this)
                         var text = item.children('a').text().toLowerCase()
 
                         // 1. show all labels that contain the search-'word' [x]
@@ -314,7 +314,7 @@ export default (jquery) => {
         let args = Array.prototype.slice.call(arguments, 1)
         let method = undefined
         let chain = this.each(function() {
-            let $this   = $(this)
+            let $this   = jquery(this)
             let data    = $this.data('HierarchySelect')
             let options = typeof option == 'object'  && option
             if (!data) {
