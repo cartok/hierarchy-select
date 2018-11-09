@@ -1,11 +1,11 @@
-// import * as $ from "../node_modules/jquery/dist/jquery.js"
-
+// import "../node_modules/popper.js/dist/popper.min.js"
+// import "../node_modules/bootstrap/dist/js/bootstrap.min.js"
+// import "../node_modules/bootstrap/dist/css/bootstrap.min.css"
 
 // a function append hierarchySelect to jquery.
 export default (jquery) => {
     const HierarchySelect = function(element, options, listInit) {
         this.$element = jquery(element)
-        // this.$element.on("key", ...)
         this.options = jquery.extend({}, jquery.fn.hierarchySelect.defaults, options)
         this.$button = this.$element.children('button')
         this.$selectedLabel = this.$button.children('.selected-label')
